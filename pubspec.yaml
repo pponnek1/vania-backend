@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 name: appcoba
+=======
+name: migrationcheck
+>>>>>>> effa6f2195b9adf57bca73dbc70354a13badbeb6
 description: Sample Vania backend web application framework
 version: 1.0.0
 

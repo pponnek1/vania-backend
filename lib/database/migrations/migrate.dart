@@ -8,6 +8,7 @@ import 'create_productnotes_table.dart';
 import 'create_orders_table.dart';
 import 'create_orderitems_table.dart';
 
+
 void main(List<String> args) async {
   await MigrationConnection().setup();
   if (args.isNotEmpty && args.first.toLowerCase() == "migrate:fresh") {

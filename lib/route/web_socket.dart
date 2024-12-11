@@ -1,6 +1,7 @@
 import 'package:vania/vania.dart';
 import 'package:appcoba/app/http/controllers/ws/chat_web_socket_controller.dart';
 
+
 class WebSocketRoute implements Route {
   @override
   void register() {
