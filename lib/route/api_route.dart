@@ -30,9 +30,9 @@ class ApiRoute implements Route {
 
     Router.get('/orders', ordersController.index);
     Router.get('/orders/{id}', ordersController.show);
-    Router.post('/orders/create', ordersController.create);
+    Router.post('/orders/create', ordersController.store);
     Router.put('/orders/update', ordersController.update);
-    Router.delete('/orders/delete', ordersController.destroy);
+    Router.delete('/orders/delete/{id}', ordersController.destroy);
 
     Router.get('/vendors', vendorsController.index);
     Router.get('/vendors/{id}', vendorsController.show);
