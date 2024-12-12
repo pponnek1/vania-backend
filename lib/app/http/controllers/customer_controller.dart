@@ -2,58 +2,62 @@ import 'package:appcoba/app/models/customers.dart';
 import 'package:vania/vania.dart';
 
 class CustomerController extends Controller {
-
   Future<Response> index() async {
-
     final listcustomer = await Customers().query().get();
     return Response.json({
-      'message' : 'data list customers',
-      'data' : listcustomer,
+      'message': 'data list customers',
+      'data': listcustomer,
     });
   }
 
-  Future<Response> create(Request request) async {
-
-    try {
-      request.validate({
-        'cust_name' : 'required',
-        'cust_address' : 'required',
-        'cust_city' : 'required',
-        'cust_state' : 'required',
-        'cust_zip' : 'required',
-        'cust_country' : 'required',
-        'cust_telp' : 'required',
-      });
-
-      final customerData = request.input();
-
-      final exitingCustomer = await Customers().query().where('cust_telp', '=', customerData['cust_telp']).first();
-
-      if (exitingCustomer != null) {
-        return Response.json({
-          'message' : 'nomor telp ini sudah terdaftar'
-        }, 409);
-      }
-      
-      customerData['created_at'] = DateTime.now().toIso8601String();
-
-      await Customers().query().insert(customerData);
-
-      return Response.json({
-        'message' : 'customer berhasil ditambahkan',
-        'data' : customerData,
-      }, 201);
-
-    } catch (e) {
-      return Response.json({
-        'message' : 'terjadi kesalahan',
-        'error' : e.toString(),
-      });
-    }
+  Future<Response> create() async {
+    return Response.json({});
   }
 
   Future<Response> store(Request request) async {
-    return Response.json({});
+      try {
+    // Validasi input
+    request.validate({
+      'cust_name': 'required',
+      'cust_address': 'required',
+      'cust_city': 'required',
+      'cust_state': 'required',
+      'cust_zip': 'required',
+      'cust_country': 'required',
+      'cust_telp': 'required',
+    });
+
+    // Filter hanya kolom yang sesuai
+    final customerData = request.only([
+      'cust_name',
+      'cust_address',
+      'cust_city',
+      'cust_state',
+      'cust_zip',
+      'cust_country',
+      'cust_telp',
+    ]);
+
+    // Tambahkan waktu pembuatan
+    customerData['created_at'] = DateTime.now().toIso8601String();
+
+    // Simpan ke database
+    await Customers().query().insert(customerData);
+
+    // Kembalikan respons sukses
+    return Response.json({
+      'message': 'Customer berhasil ditambahkan',
+      'data': customerData,
+    }, 201);
+
+  } catch (e) {
+    // Tangani error
+    return Response.json({
+      'message': 'Terjadi kesalahan',
+      'error': e.toString(),
+    });
+  }
+
   }
 
   Future<Response> show(Request request, int id) async {
@@ -69,12 +73,83 @@ class CustomerController extends Controller {
     return Response.json({});
   }
 
-  Future<Response> update(Request request, int id) async {
-    return Response.json({});
+Future<Response> update(Request request, int id) async {
+  try {
+    // Validasi input
+    request.validate({
+      'cust_name': 'required',
+      'cust_address': 'required',
+      'cust_city': 'required',
+      'cust_state': 'required',
+      'cust_zip': 'required',
+      'cust_country': 'required',
+      'cust_telp': 'required',
+    });
+
+    // Ambil hanya data yang relevan untuk diupdate
+    final customerData = request.only([
+      'cust_name',
+      'cust_address',
+      'cust_city',
+      'cust_state',
+      'cust_zip',
+      'cust_country',
+      'cust_telp',
+    ]);
+
+    // Tambahkan updated_at ke data
+    customerData['updated_at'] = DateTime.now().toIso8601String();
+
+    // Periksa apakah customer dengan ID yang diberikan ada
+    final customer = await Customers().query().where('cust_id', '=', id).first(); // Ganti 'id' ke 'cust_id' jika perlu
+    if (customer == null) {
+      return Response.json({
+        'message': 'Customer dengan ID $id tidak ditemukan',
+      }, 404);
+    }
+
+    // Lakukan update
+    await Customers().query().where('cust_id', '=', id).update(customerData);
+
+    // Kembalikan respons sukses
+    return Response.json({
+      'message': 'Customer berhasil diperbarui',
+      'data': customerData,
+    }, 200);
+  } catch (e) {
+    // Tangani error
+    return Response.json({
+      'message': 'Terjadi kesalahan',
+      'error': e.toString(),
+    }, 500);
   }
+}
 
   Future<Response> destroy(int id) async {
-    return Response.json({});
+      try {
+    // Periksa apakah pelanggan dengan ID yang diberikan ada
+    final customer = await Customers().query().where('cust_id', '=', id).first();
+
+    if (customer == null) {
+      return Response.json({
+        'message': 'Customer dengan ID $id tidak ditemukan',
+      }, 404);
+    }
+
+    // Hapus pelanggan
+    await Customers().query().where('cust_id', '=', id).delete();
+
+    // Respons sukses
+    return Response.json({
+      'message': 'Customer dengan ID $id berhasil dihapus',
+    }, 200);
+  } catch (e) {
+    // Tangani error
+    return Response.json({
+      'message': 'Terjadi kesalahan saat menghapus customer',
+      'error': e.toString(),
+    }, 500);
+  }
   }
 }
 

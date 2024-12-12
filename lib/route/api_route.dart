@@ -12,9 +12,9 @@ class ApiRoute implements Route {
     /// Base RoutePrefix
     Router.get('/customer', customerController.index);
     Router.get('/customer/{id}', customerController.show);
-    Router.post('/customer/create', customerController.create); 
-    Router.put('/customer/update', customerController.update);
-    Router.delete('/customer/delete', customerController.destroy);
+    Router.post('/customer/create', customerController.store);
+    Router.put('/customer/update/{id}', customerController.update);
+    Router.delete('/customer/delete/{id}', customerController.destroy);
 
     Router.get('/orderitems', orderitemsController.index);
     Router.get('/orderitems/{id}', orderitemsController.show);
