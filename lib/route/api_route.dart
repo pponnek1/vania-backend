@@ -9,41 +9,60 @@ import 'package:vania/vania.dart';
 class ApiRoute implements Route {
   @override
   void register() {
-    /// Base RoutePrefix
-    Router.get('/customer', customerController.index);
-    Router.get('/customer/{id}', customerController.show);
-    Router.post('/customer/create', customerController.store);
-    Router.put('/customer/update/{id}', customerController.update);
-    Router.delete('/customer/delete/{id}', customerController.destroy);
+    // Base Prefix
+    Router.basePrefix('api');
 
-    Router.get('/orderitems', orderitemsController.index);
-    Router.get('/orderitems/{id}', orderitemsController.show);
-    Router.post('/orderitems/create', orderitemsController.create);
-    Router.put('/orderitems/update', orderitemsController.update);
-    Router.delete('/orderitems/delete/{id}', orderitemsController.destroy);
+    // Group for customers
+    Router.group(() {
+      Router.get('/', customerController.index);
+      Router.get('/{id}', customerController.show);
+      Router.post('/', customerController.store);
+      Router.put('/{id}', customerController.update);
+      Router.delete('/{id}', customerController.destroy);
+    }, prefix: 'customers');
 
-    Router.get('/products', productController.index);
-    Router.get('/products/{id}', productController.show);
-    Router.post('/products/create', productController.create);
-    Router.put('/products/update', productController.update);
-    Router.delete('/products/delete/{id}', productController.destroy);
+    // Group for order items
+    Router.group(() {
+      Router.get('/', orderitemsController.index);
+      Router.get('/{id}', orderitemsController.show);
+      Router.post('/', orderitemsController.create);
+      Router.put('/{id}', orderitemsController.update);
+      Router.delete('/{id}', orderitemsController.destroy);
+    }, prefix: 'orderitems');
 
-    Router.get('/orders', ordersController.index);
-    Router.get('/orders/{id}', ordersController.show);
-    Router.post('/orders/create', ordersController.store);
-    Router.delete('/orders/delete/{id}', ordersController.destroy);
+    // Group for products
+    Router.group(() {
+      Router.get('/', productController.index);
+      Router.get('/{id}', productController.show);
+      Router.post('/', productController.create);
+      Router.put('/{id}', productController.update);
+      Router.delete('/{id}', productController.destroy);
+    }, prefix: 'products');
 
-    Router.get('/vendors', vendorsController.index);
-    Router.get('/vendors/{id}', vendorsController.show);
-    Router.post('/vendors/create', vendorsController.create);
-    Router.put('/vendors/update', vendorsController.update);
-    Router.delete('/vendors/delete/{id}', vendorsController.destroy);
-    
-    Router.get('/productnotes', productnotesController.index);
-    Router.get('/productnotes/{id}', productnotesController.show);
-    Router.post('/productnotes/create', productnotesController.create);
-    Router.put('/productnotes/update', productnotesController.update);
-    Router.delete('/productnotes/delete/{id}', productnotesController.destroy);
+    // Group for orders
+    Router.group(() {
+      Router.get('/', ordersController.index);
+      Router.get('/{id}', ordersController.show);
+      Router.post('/', ordersController.store);
+      Router.delete('/{id}', ordersController.destroy);
+    }, prefix: 'orders');
+
+    // Group for vendors
+    Router.group(() {
+      Router.get('/', vendorsController.index);
+      Router.get('/{id}', vendorsController.show);
+      Router.post('/', vendorsController.create);
+      Router.put('/{id}', vendorsController.update);
+      Router.delete('/{id}', vendorsController.destroy);
+    }, prefix: 'vendors');
+
+    // Group for product notes
+    Router.group(() {
+      Router.get('/', productnotesController.index);
+      Router.get('/{id}', productnotesController.show);
+      Router.post('/', productnotesController.create);
+      Router.put('/{id}', productnotesController.update);
+      Router.delete('/{id}', productnotesController.destroy);
+    }, prefix: 'productnotes');
   }
-  
 }
