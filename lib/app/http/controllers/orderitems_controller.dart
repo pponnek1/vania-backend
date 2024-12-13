@@ -17,7 +17,36 @@ class OrderitemsController extends Controller {
      }
 
      Future<Response> store(Request request) async {
-          return Response.json({});
+          try {
+            request.validate({
+              'order_num' : 'required',
+              'prod_id'   : 'required',
+              'quantity'  : 'required',
+              'size'      : 'required'
+            });
+
+            final orderitemData = request.only([
+              'order_num',
+              'prod_id',
+              'quantity',
+              'size',
+            ]);
+
+            orderitemData['created'] = DateTime.now().toIso8601String();
+
+            await Orderitems().query().insert(orderitemData);
+
+            return Response.json({
+              'message' : 'data order item berhasil ditambahkan',
+              'data'    : orderitemData,
+            });
+          } catch (e) {
+            
+            return Response.json({
+              'message' : 'terjadi kesalahan',
+              'error'   : e.toString(),
+            });
+          }
      }
 
      Future<Response> show(Request req, int id) async {
@@ -33,11 +62,66 @@ class OrderitemsController extends Controller {
      }
 
      Future<Response> update(Request request,int id) async {
-          return Response.json({});
+          try {
+            request.validate({
+              'order_num' : 'required',
+              'prod_id'   : 'required',
+              'quantity'  : 'required',
+              'size'      : 'required'
+            });
+
+            final orderitemData = request.only([
+              'order_num',
+              'prod_id',
+              'quantity',
+              'size',
+            ]);
+
+            final orderitems = await Orderitems().query().where('order_num', '=', id).first();
+
+            if (orderitems == null) {
+              
+              return Response.json({
+                'message' : 'customer dengan ID $id tidak ditemukan'
+              }, 404);
+            }
+
+            await Orderitems().query().where('order_num', '=', id).update(orderitemData);
+
+            return Response.json({
+              'message' : 'data order item berhasil diperbarui',
+              'data'    : orderitemData,
+            });
+
+          } catch (e) {
+            return Response.json({
+              'message' : 'terjadi kesalahan',
+              'error'   : e.toString(),
+            });
+          }
      }
 
      Future<Response> destroy(int id) async {
-          return Response.json({});
+          try {
+
+            final orderitems = await Orderitems().query().where('order_num', '=', id).first();
+            
+            if (orderitems == null) {
+              return Response.json({
+                'message' : 'data order item ID $id tidak ditemukan',
+              }, 404);
+            }
+            await Orderitems().query().where('order_num', '=', id).delete();
+
+            return Response.json({
+              'message' : 'data order item ID $id berhasil dihapus'
+            }, 200);
+          } catch (e) {
+            return Response.json({
+              'message' : 'terjadi kesalahan',
+            });
+            
+          }
      }
 }
 

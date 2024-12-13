@@ -20,30 +20,30 @@ class ApiRoute implements Route {
     Router.get('/orderitems/{id}', orderitemsController.show);
     Router.post('/orderitems/create', orderitemsController.create);
     Router.put('/orderitems/update', orderitemsController.update);
-    Router.delete('/orderitems/delete', orderitemsController.destroy);
+    Router.delete('/orderitems/delete/{id}', orderitemsController.destroy);
 
     Router.get('/products', productController.index);
     Router.get('/products/{id}', productController.show);
     Router.post('/products/create', productController.create);
     Router.put('/products/update', productController.update);
-    Router.delete('/products/delete', productController.destroy);
+    Router.delete('/products/delete/{id}', productController.destroy);
 
     Router.get('/orders', ordersController.index);
     Router.get('/orders/{id}', ordersController.show);
     Router.post('/orders/create', ordersController.store);
-    Router.put('/orders/update', ordersController.update);
     Router.delete('/orders/delete/{id}', ordersController.destroy);
 
     Router.get('/vendors', vendorsController.index);
     Router.get('/vendors/{id}', vendorsController.show);
     Router.post('/vendors/create', vendorsController.create);
     Router.put('/vendors/update', vendorsController.update);
-    Router.delete('/vendors/delete', vendorsController.destroy);
+    Router.delete('/vendors/delete/{id}', vendorsController.destroy);
     
     Router.get('/productnotes', productnotesController.index);
     Router.get('/productnotes/{id}', productnotesController.show);
     Router.post('/productnotes/create', productnotesController.create);
     Router.put('/productnotes/update', productnotesController.update);
-    Router.delete('/productnotes/delete', productnotesController.destroy);
+    Router.delete('/productnotes/delete/{id}', productnotesController.destroy);
   }
+  
 }
