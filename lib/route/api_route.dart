@@ -5,12 +5,16 @@ import 'package:appcoba/app/http/controllers/product_controller.dart';
 import 'package:appcoba/app/http/controllers/productnotes_controller.dart';
 import 'package:appcoba/app/http/controllers/vendors_controller.dart';
 import 'package:vania/vania.dart';
+import 'package:appcoba/app/http/controllers/auth_controller.dart';
 
 class ApiRoute implements Route {
   @override
   void register() {
     // Base Prefix
     Router.basePrefix('api');
+
+    Router.post('login', authController.login);
+    Router.post('sign-up', authController.signUp);
 
     // Group for customers
     Router.group(() {

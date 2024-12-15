@@ -6,6 +6,9 @@ class CreateUserTable extends Migration {
     super.up();
     await createTableNotExists('users', () {
       id();
+      string('username');
+      string('email');
+      string('password');
       timeStamps();
     });
   }
